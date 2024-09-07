@@ -1,0 +1,99 @@
+////////assembly language program to perform multiplication of 8-bit data
+org 100h 
+jmp start
+msg:db "Multiplication of two 8-bit numbers is:", 0Dh,0Ah,24h
+start: mov dx,msg
+       mov ah,09h
+       int 21h
+num1 db 32h
+num2 db 29h
+mov al,num1
+mul num2
+mov bx,ax
+AND ax,0F000h
+shr ax, 12
+add ax,30h
+cmp ax,39h
+jle first_bit
+add ax,7h
+first_bit: mov dl,al
+           mov ah,02h
+           int 21h
+mov ax,bx
+and ax,0F00h
+shr ax,8
+add ax,30h
+cmp ax,39h
+jle second_bit
+add ax,7h
+second_bit: mov dl,al
+            mov ah,02h
+            int 21h  
+mov ax,bx
+and ax,00F0h
+shr ax,4
+add ax,30h
+cmp ax,39h
+jle third_bit
+add ax,7h
+third_bit: mov dl,al
+            mov ah,02h
+            int 21h  
+mov ax,bx
+and ax,000Fh
+add ax,30h
+cmp ax,39h
+jle fourth_bit
+add ax,7h
+fourth_bit: mov dl,al
+            mov ah,02h
+            int 21h
+ret 
+/////////program in assembly language to perform multiplication of 16-bit data
+org 100h           
+mov ax, 0012h      
+mov bx, 0012h    
+mul bx             
+mov bx, ax        
+mov ah, bh         
+shr ah, 4        
+add ah, 30h        
+cmp ah, 39h        
+jle print_high_nibble 
+add ah, 7         
+print_high_nibble:
+mov dl, ah         
+mov ah, 02h       
+int 21h           
+mov ah, bh        
+and ah, 0fh        
+add ah, 30h       
+cmp ah, 39h        
+jle print_low_nibble
+add ah, 7         
+print_low_nibble:
+mov dl, ah         
+mov ah, 02h        
+int 21h            
+mov ah, bl        
+shr ah, 4         
+add ah, 30h       
+cmp ah, 39h      
+jle print_high_nibble2 
+add ah, 7          
+print_high_nibble2:
+mov dl, ah        
+mov ah, 02h        
+int 21h           
+mov ah, bl        
+and ah, 0fh        
+add ah, 30h       
+cmp ah, 39h        
+jle print_low_nibble2 
+add ah, 7         
+print_low_nibble2:
+mov dl, ah         
+mov ah, 02h        
+int 21h            
+mov ah, 4Ch       
+int 21h            
